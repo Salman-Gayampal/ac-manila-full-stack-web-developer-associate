@@ -7,14 +7,14 @@ function SignupForm({ onSubmit }) {
   const [touched, setTouched] = useState({ email: false, password: false });
 
   const validate = () => {
-    const errors = {};
+    const inlineMessages = {};
     if (!email.includes("@") || !email.includes(".")) {
-      errors.email = 'Email must include "@" and a "."';
+      inlineMessages.email = 'Email must include "@" and a "."';
     }
     if (password.length < 8) {
-      errors.password = "Password must be at least 8 characters";
+      inlineMessages.password = "Password must be at least 8 characters";
     }
-    return errors;
+    return inlineMessages;
   };
 
   const errors = validate();
@@ -30,34 +30,35 @@ function SignupForm({ onSubmit }) {
   return (
     <form onSubmit={handleSubmit}>
       <h1>Signup Form</h1>
-      <div>
+      <div className="form-group">
         <label>Email:</label>
         <input
           className="form-input"
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          onBlur={() => setTouched((prev) => ({ ...prev, email: true }))}
+          onFocus={() => setTouched((prev) => ({ ...prev, email: true }))}
+          onBlur={() => setTouched((prev) => ({ ...prev, email: false }))}
         />
         {touched.email && errors.email && (
           <div className="error">{errors.email}</div>
         )}
       </div>
 
-      <div>
+      <div className="form-group">
         <label>Password:</label>
         <input
           className="form-input"
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          onBlur={() => setTouched((prev) => ({ ...prev, password: true }))}
+          onFocus={() => setTouched((prev) => ({ ...prev, password: true }))}
+          onBlur={() => setTouched((prev) => ({ ...prev, password: false }))}
         />
         {touched.password && errors.password && (
           <div className="error">{errors.password}</div>
         )}
       </div>
-
       <button className="signup-button" type="submit" disabled={!isValid}>
         Sign Up
       </button>
